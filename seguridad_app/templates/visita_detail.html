@@ -74,11 +74,15 @@
                 <div>
                     <strong>Resultado:</strong>
                     <p>
-                        <span style="padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem;
-                              {% if visita.resultado == 'satisfactorio' %}background-color: #d4edda; color: #155724;
-                              {% elif visita.resultado == 'observaciones_menores' %}background-color: #fff3cd; color: #856404;
-                              {% elif visita.resultado == 'observaciones_mayores' %}background-color: #f8d7da; color: #721c24;
-                              {% else %}background-color: #dc3545; color: white;{% endif %}">
+                        {% if visita.resultado == 'satisfactorio' %}
+                        <span style="padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem; background-color: #d4edda; color: #155724;">
+                        {% elif visita.resultado == 'observaciones_menores' %}
+                        <span style="padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem; background-color: #fff3cd; color: #856404;">
+                        {% elif visita.resultado == 'observaciones_mayores' %}
+                        <span style="padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem; background-color: #f8d7da; color: #721c24;">
+                        {% else %}
+                        <span style="padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem; background-color: #dc3545; color: white;">
+                        {% endif %}
                             {{ visita.get_resultado_display }}
                         </span>
                     </p>

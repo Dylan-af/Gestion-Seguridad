@@ -45,20 +45,28 @@
                 <td>{{ checklist.area }}</td>
                 <td>{{ checklist.responsable.username }}</td>
                 <td>
-                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; 
-                          {% if checklist.estado == 'completado' %}background-color: #d4edda; color: #155724;
-                          {% elif checklist.estado == 'en_progreso' %}background-color: #fff3cd; color: #856404;
-                          {% elif checklist.estado == 'pendiente' %}background-color: #d1ecf1; color: #0c5460;
-                          {% else %}background-color: #f8d7da; color: #721c24;{% endif %}">
+                    {% if checklist.estado == 'completado' %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #d4edda; color: #155724;">
+                    {% elif checklist.estado == 'en_progreso' %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #fff3cd; color: #856404;">
+                    {% elif checklist.estado == 'pendiente' %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #d1ecf1; color: #0c5460;">
+                    {% else %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #f8d7da; color: #721c24;">
+                    {% endif %}
                         {{ checklist.get_estado_display }}
                     </span>
                 </td>
                 <td>
-                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem;
-                          {% if checklist.prioridad == 'critica' %}background-color: #dc3545; color: white;
-                          {% elif checklist.prioridad == 'alta' %}background-color: #fd7e14; color: white;
-                          {% elif checklist.prioridad == 'media' %}background-color: #ffc107; color: black;
-                          {% else %}background-color: #6c757d; color: white;{% endif %}">
+                    {% if checklist.prioridad == 'critica' %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #dc3545; color: white;">
+                    {% elif checklist.prioridad == 'alta' %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #fd7e14; color: white;">
+                    {% elif checklist.prioridad == 'media' %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #ffc107; color: black;">
+                    {% else %}
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; background-color: #6c757d; color: white;">
+                    {% endif %}
                         {{ checklist.get_prioridad_display }}
                     </span>
                 </td>
