@@ -96,8 +96,9 @@
         </div>
         
         <div class="form-group">
-            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <label style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: normal;">
                 <input type="checkbox" id="requiere_seguimiento" name="requiere_seguimiento" 
+                       style="width: auto; margin: 0;"
                        {% if visita and visita.requiere_seguimiento %}checked{% endif %}>
                 <span>Requiere seguimiento</span>
             </label>
