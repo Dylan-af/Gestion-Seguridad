@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Visitas - Gestión Forestal{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2 style="color: #2c5f2d;">🔍 Gestión de Visitas de Seguridad</h2>
+    <a href="{% url 'visita_create' %}" class="btn btn-primary">+ Nueva Visita</a>
+</div>
+
+<div class="card">
+    <form method="get" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="text" name="q" placeholder="Buscar visita..." value="{{ query }}" 
+               style="flex: 1; min-width: 200px; padding: 0.75rem; border: 1px solid #ced4da; border-radius: 4px;">
+        
+        <select name="tipo" style="padding: 0.75rem; border: 1px solid #ced4da; border-radius: 4px;">
+            <option value="">Todos los tipos</option>
+            <option value="preventiva" {% if tipo_filter == 'preventiva' %}selected{% endif %}>Preventiva</option>
+            <option value="correctiva" {% if tipo_filter == 'correctiva' %}selected{% endif %}>Correctiva</option>
+            <option value="seguimiento" {% if tipo_filter == 'seguimiento' %}selected{% endif %}>Seguimiento</option>
+            <option value="emergencia" {% if tipo_filter == 'emergencia' %}selected{% endif %}>Emergencia</option>
+        </select>
+        
+        <select name="resultado" style="padding: 0.75rem; border: 1px solid #ced4da; border-radius: 4px;">
+            <option value="">Todos los resultados</option>
+            <option value="satisfactorio" {% if resultado_filter == 'satisfactorio' %}selected{% endif %}>Satisfactorio</option>
+            <option value="observaciones_menores" {% if resultado_filter == 'observaciones_menores' %}selected{% endif %}>Observaciones Menores</option>
+            <option value="observaciones_mayores" {% if resultado_filter == 'observaciones_mayores' %}selected{% endif %}>Observaciones Mayores</option>
+            <option value="critico" {% if resultado_filter == 'critico' %}selected{% endif %}>Crítico</option>
+        </select>
+        
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a href="{% url 'visita_list' %}" class="btn btn-secondary">Limpiar</a>
+    </form>
+    
+    {% if visitas %}
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Lugar</th>
+                <th>Inspector</th>
+                <th>Resultado</th>
+                <th>Seguimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visita in visitas %}
+            <tr>
+                <td><strong>{{ visita.codigo_visita }}</strong></td>
+                <td>{{ visita.get_tipo_visita_display }}</td>
+                <td>{{ visita.fecha_visita|date:"d/m/Y" }}</td>
+                <td>{{ visita.lugar }}</td>
+                <td>{{ visita.inspector.username }}</td>
+                <td>
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem;
+                          {% if visita.resultado == 'satisfactorio' %}background-color: #d4edda; color: #155724;
+                          {% elif visita.resultado == 'observaciones_menores' %}background-color: #fff3cd; color: #856404;
+                          {% elif visita.resultado == 'observaciones_mayores' %}background-color: #f8d7da; color: #721c24;
+                          {% else %}background-color: #dc3545; color: white;{% endif %}">
+                        {{ visita.get_resultado_display }}
+                    </span>
+                </td>
+                <td>
+                    {% if visita.requiere_seguimiento %}
+                    <span style="background-color: #ffc107; color: black; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem;">
+                        ⚠️ Sí
+                    </span>
+                    {% else %}
+                    <span style="color: #6c757d;">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'visita_detail' visita.pk %}" style="color: #2c5f2d; margin-right: 0.5rem;">Ver</a>
+                    <a href="{% url 'visita_edit' visita.pk %}" style="color: #007bff; margin-right: 0.5rem;">Editar</a>
+                    <a href="{% url 'visita_delete' visita.pk %}" style="color: #dc3545;">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; color: #6c757d; padding: 2rem;">
+        No se encontraron visitas con los criterios de búsqueda especificados.
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

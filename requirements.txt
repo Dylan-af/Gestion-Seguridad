@@ -1,0 +1,19 @@
+# Dependencias de Python para TI3041_Backend_Checklist
+# Proyecto de Gestión Forestal - Evaluación N°3
+
+# Framework Django
+Django==4.2.7
+
+# Conector MySQL para Django
+mysqlclient==2.2.0
+
+# Hashers de contraseñas adicionales
+argon2-cffi==23.1.0
+bcrypt==4.1.1
+
+# Utilidades adicionales
+python-dotenv==1.0.0
+pillow==10.1.0
+
+# Herramientas de desarrollo (opcional)
+django-debug-toolbar==4.2.0

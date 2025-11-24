@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Gestión Forestal{% endblock %}
+
+{% block content %}
+<h2 style="color: #2c5f2d; margin-bottom: 2rem;">📊 Dashboard</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h3 style="margin-bottom: 1rem;">📋 Checklists</h3>
+        <p style="font-size: 2rem; font-weight: bold;">{{ total_checklists }}</p>
+        <p>Total registrados</p>
+    </div>
+    
+    <div class="card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+        <h3 style="margin-bottom: 1rem;">⏳ Pendientes</h3>
+        <p style="font-size: 2rem; font-weight: bold;">{{ checklists_pendientes }}</p>
+        <p>Checklists por completar</p>
+    </div>
+    
+    <div class="card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+        <h3 style="margin-bottom: 1rem;">✅ Completados</h3>
+        <p style="font-size: 2rem; font-weight: bold;">{{ checklists_completados }}</p>
+        <p>Checklists finalizados</p>
+    </div>
+    
+    <div class="card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white;">
+        <h3 style="margin-bottom: 1rem;">🔍 Visitas</h3>
+        <p style="font-size: 2rem; font-weight: bold;">{{ total_visitas }}</p>
+        <p>Total realizadas</p>
+    </div>
+    
+    <div class="card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+        <h3 style="margin-bottom: 1rem;">⚠️ Críticas</h3>
+        <p style="font-size: 2rem; font-weight: bold;">{{ visitas_criticas }}</p>
+        <p>Visitas con resultado crítico</p>
+    </div>
+    
+    <div class="card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white;">
+        <h3 style="margin-bottom: 1rem;">🔄 Seguimiento</h3>
+        <p style="font-size: 2rem; font-weight: bold;">{{ visitas_seguimiento }}</p>
+        <p>Requieren seguimiento</p>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="card">
+        <h3 style="color: #2c5f2d; margin-bottom: 1rem;">📋 Checklists Recientes</h3>
+        {% if checklists_recientes %}
+        <table style="box-shadow: none;">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Estado</th>
+                    <th>Área</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for checklist in checklists_recientes %}
+                <tr>
+                    <td><a href="{% url 'checklist_detail' checklist.pk %}" style="color: #2c5f2d; text-decoration: none;">{{ checklist.titulo }}</a></td>
+                    <td>{{ checklist.get_estado_display }}</td>
+                    <td>{{ checklist.area }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'checklist_list' %}" class="btn btn-primary" style="margin-top: 1rem;">Ver Todos</a>
+        {% else %}
+        <p style="color: #6c757d;">No hay checklists registrados.</p>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h3 style="color: #2c5f2d; margin-bottom: 1rem;">🔍 Visitas Recientes</h3>
+        {% if visitas_recientes %}
+        <table style="box-shadow: none;">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Lugar</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visita in visitas_recientes %}
+                <tr>
+                    <td><a href="{% url 'visita_detail' visita.pk %}" style="color: #2c5f2d; text-decoration: none;">{{ visita.codigo_visita }}</a></td>
+                    <td>{{ visita.lugar }}</td>
+                    <td>{{ visita.get_resultado_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'visita_list' %}" class="btn btn-primary" style="margin-top: 1rem;">Ver Todas</a>
+        {% else %}
+        <p style="color: #6c757d;">No hay visitas registradas.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

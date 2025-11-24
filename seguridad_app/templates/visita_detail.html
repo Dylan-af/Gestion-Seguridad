@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ visita.codigo_visita }} - Gestión Forestal{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{% url 'visita_list' %}" style="color: #2c5f2d; text-decoration: none;">← Volver a Visitas</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2 style="color: #2c5f2d;">🔍 {{ visita.codigo_visita }}</h2>
+    <div>
+        <a href="{% url 'visita_edit' visita.pk %}" class="btn btn-primary">✏️ Editar</a>
+        <a href="{% url 'visita_delete' visita.pk %}" class="btn btn-danger">🗑️ Eliminar</a>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+    <div>
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">Información General</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong>Código de Visita:</strong>
+                    <p style="color: #495057;">{{ visita.codigo_visita }}</p>
+                </div>
+                <div>
+                    <strong>Tipo de Visita:</strong>
+                    <p style="color: #495057;">{{ visita.get_tipo_visita_display }}</p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong>Fecha:</strong>
+                    <p style="color: #495057;">{{ visita.fecha_visita|date:"d/m/Y" }}</p>
+                </div>
+                <div>
+                    <strong>Hora de Inicio:</strong>
+                    <p style="color: #495057;">{{ visita.hora_inicio|time:"H:i" }}</p>
+                </div>
+                <div>
+                    <strong>Hora de Fin:</strong>
+                    <p style="color: #495057;">{{ visita.hora_fin|time:"H:i" }}</p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong>Lugar:</strong>
+                    <p style="color: #495057;">{{ visita.lugar }}</p>
+                </div>
+                <div>
+                    <strong>Inspector:</strong>
+                    <p style="color: #495057;">{{ visita.inspector.get_full_name|default:visita.inspector.username }}</p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Checklist Asociado:</strong>
+                <p style="color: #495057;">
+                    {% if visita.checklist %}
+                    <a href="{% url 'checklist_detail' visita.checklist.pk %}" style="color: #2c5f2d;">
+                        {{ visita.checklist.titulo }}
+                    </a>
+                    {% else %}
+                    Sin checklist asociado
+                    {% endif %}
+                </p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong>Resultado:</strong>
+                    <p>
+                        <span style="padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem;
+                              {% if visita.resultado == 'satisfactorio' %}background-color: #d4edda; color: #155724;
+                              {% elif visita.resultado == 'observaciones_menores' %}background-color: #fff3cd; color: #856404;
+                              {% elif visita.resultado == 'observaciones_mayores' %}background-color: #f8d7da; color: #721c24;
+                              {% else %}background-color: #dc3545; color: white;{% endif %}">
+                            {{ visita.get_resultado_display }}
+                        </span>
+                    </p>
+                </div>
+                <div>
+                    <strong>Requiere Seguimiento:</strong>
+                    <p>
+                        {% if visita.requiere_seguimiento %}
+                        <span style="background-color: #ffc107; color: black; padding: 0.5rem 1rem; border-radius: 12px;">
+                            ⚠️ Sí
+                        </span>
+                        {% else %}
+                        <span style="color: #6c757d;">No</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">📝 Hallazgos</h3>
+            <p style="color: #495057; line-height: 1.8; white-space: pre-wrap;">{{ visita.hallazgos }}</p>
+        </div>
+        
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">💡 Recomendaciones</h3>
+            <p style="color: #495057; line-height: 1.8; white-space: pre-wrap;">{{ visita.recomendaciones }}</p>
+        </div>
+        
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">📅 Fechas de Registro</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <strong>Fecha de Creación:</strong>
+                    <p style="color: #495057;">{{ visita.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                </div>
+                <div>
+                    <strong>Última Actualización:</strong>
+                    <p style="color: #495057;">{{ visita.fecha_actualizacion|date:"d/m/Y H:i" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">Acciones Rápidas</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <a href="{% url 'visita_edit' visita.pk %}" class="btn btn-primary">✏️ Editar Visita</a>
+                {% if visita.checklist %}
+                <a href="{% url 'checklist_detail' visita.checklist.pk %}" class="btn btn-secondary">📋 Ver Checklist</a>
+                {% endif %}
+                <a href="{% url 'visita_list' %}" class="btn btn-secondary">🔍 Ver Todas las Visitas</a>
+                <a href="{% url 'visita_delete' visita.pk %}" class="btn btn-danger">🗑️ Eliminar Visita</a>
+            </div>
+        </div>
+        
+        {% if visita.requiere_seguimiento %}
+        <div class="card" style="border-left: 4px solid #ffc107;">
+            <h3 style="color: #856404; margin-bottom: 1rem;">⚠️ Seguimiento Requerido</h3>
+            <p style="color: #856404;">
+                Esta visita requiere seguimiento. Asegúrese de programar una visita de seguimiento y verificar el cumplimiento de las recomendaciones.
+            </p>
+        </div>
+        {% endif %}
+        
+        {% if visita.resultado == 'critico' %}
+        <div class="card" style="border-left: 4px solid #dc3545;">
+            <h3 style="color: #dc3545; margin-bottom: 1rem;">🚨 Resultado Crítico</h3>
+            <p style="color: #721c24;">
+                Esta visita tiene un resultado crítico. Se recomienda tomar acciones inmediatas para resolver los problemas identificados.
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

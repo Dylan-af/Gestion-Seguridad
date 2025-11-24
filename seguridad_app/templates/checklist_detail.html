@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ checklist.titulo }} - Gestión Forestal{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{% url 'checklist_list' %}" style="color: #2c5f2d; text-decoration: none;">← Volver a Checklists</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2 style="color: #2c5f2d;">📋 {{ checklist.titulo }}</h2>
+    <div>
+        <a href="{% url 'checklist_edit' checklist.pk %}" class="btn btn-primary">✏️ Editar</a>
+        <a href="{% url 'checklist_delete' checklist.pk %}" class="btn btn-danger">🗑️ Eliminar</a>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+    <div>
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">Información del Checklist</h3>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Descripción:</strong>
+                <p style="margin-top: 0.5rem; color: #495057;">{{ checklist.descripcion }}</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong>Área Forestal:</strong>
+                    <p style="color: #495057;">{{ checklist.area }}</p>
+                </div>
+                <div>
+                    <strong>Responsable:</strong>
+                    <p style="color: #495057;">{{ checklist.responsable.get_full_name|default:checklist.responsable.username }}</p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong>Estado:</strong>
+                    <p>
+                        <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem;
+                              {% if checklist.estado == 'completado' %}background-color: #d4edda; color: #155724;
+                              {% elif checklist.estado == 'en_progreso' %}background-color: #fff3cd; color: #856404;
+                              {% elif checklist.estado == 'pendiente' %}background-color: #d1ecf1; color: #0c5460;
+                              {% else %}background-color: #f8d7da; color: #721c24;{% endif %}">
+                            {{ checklist.get_estado_display }}
+                        </span>
+                    </p>
+                </div>
+                <div>
+                    <strong>Prioridad:</strong>
+                    <p>
+                        <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem;
+                              {% if checklist.prioridad == 'critica' %}background-color: #dc3545; color: white;
+                              {% elif checklist.prioridad == 'alta' %}background-color: #fd7e14; color: white;
+                              {% elif checklist.prioridad == 'media' %}background-color: #ffc107; color: black;
+                              {% else %}background-color: #6c757d; color: white;{% endif %}">
+                            {{ checklist.get_prioridad_display }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong>Fecha de Creación:</strong>
+                    <p style="color: #495057;">{{ checklist.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                </div>
+                <div>
+                    <strong>Fecha de Vencimiento:</strong>
+                    <p style="color: #495057;">{{ checklist.fecha_vencimiento|date:"d/m/Y" }}</p>
+                </div>
+            </div>
+            
+            {% if checklist.observaciones %}
+            <div>
+                <strong>Observaciones:</strong>
+                <p style="margin-top: 0.5rem; color: #495057;">{{ checklist.observaciones }}</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">🔍 Visitas Asociadas</h3>
+            
+            {% if visitas %}
+            <table style="box-shadow: none;">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Fecha</th>
+                        <th>Lugar</th>
+                        <th>Resultado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visita in visitas %}
+                    <tr>
+                        <td>{{ visita.codigo_visita }}</td>
+                        <td>{{ visita.fecha_visita|date:"d/m/Y" }}</td>
+                        <td>{{ visita.lugar }}</td>
+                        <td>{{ visita.get_resultado_display }}</td>
+                        <td><a href="{% url 'visita_detail' visita.pk %}" style="color: #2c5f2d;">Ver detalles</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p style="color: #6c757d;">No hay visitas asociadas a este checklist.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div>
+        <div class="card">
+            <h3 style="color: #2c5f2d; margin-bottom: 1rem;">Acciones Rápidas</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <a href="{% url 'checklist_edit' checklist.pk %}" class="btn btn-primary">✏️ Editar Checklist</a>
+                <a href="{% url 'visita_create' %}" class="btn btn-secondary">➕ Crear Visita</a>
+                <a href="{% url 'checklist_list' %}" class="btn btn-secondary">📋 Ver Todos los Checklists</a>
+                <a href="{% url 'checklist_delete' checklist.pk %}" class="btn btn-danger">🗑️ Eliminar Checklist</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

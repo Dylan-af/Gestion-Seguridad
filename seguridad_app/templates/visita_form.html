@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if is_edit %}Editar{% else %}Crear{% endif %} Visita - Gestión Forestal{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{% url 'visita_list' %}" style="color: #2c5f2d; text-decoration: none;">← Volver a Visitas</a>
+</div>
+
+<h2 style="color: #2c5f2d; margin-bottom: 2rem;">
+    {% if is_edit %}✏️ Editar Visita{% else %}➕ Crear Nueva Visita{% endif %}
+</h2>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label for="codigo_visita">Código de Visita *</label>
+                <input type="text" id="codigo_visita" name="codigo_visita" required 
+                       value="{% if visita %}{{ visita.codigo_visita }}{% endif %}"
+                       placeholder="Ej: VIS-2024-001">
+            </div>
+            
+            <div class="form-group">
+                <label for="tipo_visita">Tipo de Visita *</label>
+                <select id="tipo_visita" name="tipo_visita" required>
+                    {% for value, display in tipo_choices %}
+                    <option value="{{ value }}" {% if visita and visita.tipo_visita == value %}selected{% endif %}>
+                        {{ display }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label for="fecha_visita">Fecha de Visita *</label>
+                <input type="date" id="fecha_visita" name="fecha_visita" required 
+                       value="{% if visita %}{{ visita.fecha_visita|date:'Y-m-d' }}{% endif %}">
+            </div>
+            
+            <div class="form-group">
+                <label for="hora_inicio">Hora de Inicio *</label>
+                <input type="time" id="hora_inicio" name="hora_inicio" required 
+                       value="{% if visita %}{{ visita.hora_inicio|time:'H:i' }}{% endif %}">
+            </div>
+            
+            <div class="form-group">
+                <label for="hora_fin">Hora de Fin *</label>
+                <input type="time" id="hora_fin" name="hora_fin" required 
+                       value="{% if visita %}{{ visita.hora_fin|time:'H:i' }}{% endif %}">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="lugar">Lugar *</label>
+            <input type="text" id="lugar" name="lugar" required 
+                   value="{% if visita %}{{ visita.lugar }}{% endif %}"
+                   placeholder="Ej: Sector Norte - Área de Tala">
+        </div>
+        
+        <div class="form-group">
+            <label for="checklist">Checklist Asociado (opcional)</label>
+            <select id="checklist" name="checklist">
+                <option value="">-- Sin checklist asociado --</option>
+                {% for item in checklists %}
+                <option value="{{ item.pk }}" {% if visita and visita.checklist and visita.checklist.pk == item.pk %}selected{% endif %}>
+                    {{ item.titulo }} - {{ item.area }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="hallazgos">Hallazgos *</label>
+            <textarea id="hallazgos" name="hallazgos" required style="min-height: 120px;">{% if visita %}{{ visita.hallazgos }}{% endif %}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="resultado">Resultado *</label>
+            <select id="resultado" name="resultado" required>
+                {% for value, display in resultado_choices %}
+                <option value="{{ value }}" {% if visita and visita.resultado == value %}selected{% endif %}>
+                    {{ display }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="recomendaciones">Recomendaciones *</label>
+            <textarea id="recomendaciones" name="recomendaciones" required style="min-height: 120px;">{% if visita %}{{ visita.recomendaciones }}{% endif %}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="checkbox" id="requiere_seguimiento" name="requiere_seguimiento" 
+                       {% if visita and visita.requiere_seguimiento %}checked{% endif %}>
+                <span>Requiere seguimiento</span>
+            </label>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                {% if is_edit %}💾 Guardar Cambios{% else %}✅ Crear Visita{% endif %}
+            </button>
+            <a href="{% url 'visita_list' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

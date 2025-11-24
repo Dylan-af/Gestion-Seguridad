@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Checklists - Gestión Forestal{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2 style="color: #2c5f2d;">📋 Gestión de Checklists</h2>
+    <a href="{% url 'checklist_create' %}" class="btn btn-primary">+ Nuevo Checklist</a>
+</div>
+
+<div class="card">
+    <form method="get" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+        <input type="text" name="q" placeholder="Buscar checklist..." value="{{ query }}" 
+               style="flex: 1; padding: 0.75rem; border: 1px solid #ced4da; border-radius: 4px;">
+        
+        <select name="estado" style="padding: 0.75rem; border: 1px solid #ced4da; border-radius: 4px;">
+            <option value="">Todos los estados</option>
+            <option value="pendiente" {% if estado_filter == 'pendiente' %}selected{% endif %}>Pendiente</option>
+            <option value="en_progreso" {% if estado_filter == 'en_progreso' %}selected{% endif %}>En Progreso</option>
+            <option value="completado" {% if estado_filter == 'completado' %}selected{% endif %}>Completado</option>
+            <option value="cancelado" {% if estado_filter == 'cancelado' %}selected{% endif %}>Cancelado</option>
+        </select>
+        
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a href="{% url 'checklist_list' %}" class="btn btn-secondary">Limpiar</a>
+    </form>
+    
+    {% if checklists %}
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Área</th>
+                <th>Responsable</th>
+                <th>Estado</th>
+                <th>Prioridad</th>
+                <th>Vencimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for checklist in checklists %}
+            <tr>
+                <td><strong>{{ checklist.titulo }}</strong></td>
+                <td>{{ checklist.area }}</td>
+                <td>{{ checklist.responsable.username }}</td>
+                <td>
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; 
+                          {% if checklist.estado == 'completado' %}background-color: #d4edda; color: #155724;
+                          {% elif checklist.estado == 'en_progreso' %}background-color: #fff3cd; color: #856404;
+                          {% elif checklist.estado == 'pendiente' %}background-color: #d1ecf1; color: #0c5460;
+                          {% else %}background-color: #f8d7da; color: #721c24;{% endif %}">
+                        {{ checklist.get_estado_display }}
+                    </span>
+                </td>
+                <td>
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem;
+                          {% if checklist.prioridad == 'critica' %}background-color: #dc3545; color: white;
+                          {% elif checklist.prioridad == 'alta' %}background-color: #fd7e14; color: white;
+                          {% elif checklist.prioridad == 'media' %}background-color: #ffc107; color: black;
+                          {% else %}background-color: #6c757d; color: white;{% endif %}">
+                        {{ checklist.get_prioridad_display }}
+                    </span>
+                </td>
+                <td>{{ checklist.fecha_vencimiento|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'checklist_detail' checklist.pk %}" style="color: #2c5f2d; margin-right: 0.5rem;">Ver</a>
+                    <a href="{% url 'checklist_edit' checklist.pk %}" style="color: #007bff; margin-right: 0.5rem;">Editar</a>
+                    <a href="{% url 'checklist_delete' checklist.pk %}" style="color: #dc3545;">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; color: #6c757d; padding: 2rem;">
+        No se encontraron checklists con los criterios de búsqueda especificados.
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

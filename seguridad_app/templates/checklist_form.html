@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if is_edit %}Editar{% else %}Crear{% endif %} Checklist - Gestión Forestal{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{% url 'checklist_list' %}" style="color: #2c5f2d; text-decoration: none;">← Volver a Checklists</a>
+</div>
+
+<h2 style="color: #2c5f2d; margin-bottom: 2rem;">
+    {% if is_edit %}✏️ Editar Checklist{% else %}➕ Crear Nuevo Checklist{% endif %}
+</h2>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="titulo">Título *</label>
+            <input type="text" id="titulo" name="titulo" required 
+                   value="{% if checklist %}{{ checklist.titulo }}{% endif %}">
+        </div>
+        
+        <div class="form-group">
+            <label for="descripcion">Descripción *</label>
+            <textarea id="descripcion" name="descripcion" required>{% if checklist %}{{ checklist.descripcion }}{% endif %}</textarea>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label for="area">Área Forestal *</label>
+                <input type="text" id="area" name="area" required 
+                       value="{% if checklist %}{{ checklist.area }}{% endif %}"
+                       placeholder="Ej: Sector Norte, Plantación A1">
+            </div>
+            
+            <div class="form-group">
+                <label for="fecha_vencimiento">Fecha de Vencimiento *</label>
+                <input type="date" id="fecha_vencimiento" name="fecha_vencimiento" required 
+                       value="{% if checklist %}{{ checklist.fecha_vencimiento|date:'Y-m-d' }}{% endif %}">
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label for="estado">Estado *</label>
+                <select id="estado" name="estado" required>
+                    {% for value, display in estado_choices %}
+                    <option value="{{ value }}" {% if checklist and checklist.estado == value %}selected{% endif %}>
+                        {{ display }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="prioridad">Prioridad *</label>
+                <select id="prioridad" name="prioridad" required>
+                    {% for value, display in prioridad_choices %}
+                    <option value="{{ value }}" {% if checklist and checklist.prioridad == value %}selected{% endif %}>
+                        {{ display }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" name="observaciones">{% if checklist %}{{ checklist.observaciones }}{% endif %}</textarea>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                {% if is_edit %}💾 Guardar Cambios{% else %}✅ Crear Checklist{% endif %}
+            </button>
+            <a href="{% url 'checklist_list' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
