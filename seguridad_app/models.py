@@ -1,6 +1,6 @@
 """
-Modelos de datos para la aplicación seguridad_app
-TI3041_Backend_Checklist - Evaluación N°3
+Sistema de Gestión de Seguridad Forestal
+Modelos de datos para Checklists y Visitas de Seguridad
 
 Incluye dos entidades principales:
 1. Checklist - Para registrar checklists operacionales

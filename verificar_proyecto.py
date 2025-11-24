@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """
-Script de verificación de la estructura del proyecto
-TI3041_Backend_Checklist - Sistema de Gestión Forestal
+Script de Verificación del Proyecto
+Sistema de Gestión de Seguridad Forestal
+Verifica la estructura completa del proyecto Django
 """
 
 import os
@@ -50,7 +51,9 @@ def verificar_estructura():
     ]
     
     print("=" * 70)
-    print("🔍 VERIFICACIÓN DE ESTRUCTURA DEL PROYECTO")
+    print("="*70)
+    print("   Sistema de Gestión de Seguridad Forestal")
+    print("   Script de Verificación Integral del Proyecto")
     print("=" * 70)
     print()
     

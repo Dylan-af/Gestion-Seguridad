@@ -1,6 +1,7 @@
 """
 Django settings para el proyecto gestion_forestal.
-TI3041_Backend_Checklist - Evaluación N°3
+Sistema de Gestión de Seguridad Forestal
+Gestión de Visitas de Seguridad y Checklists Operacionales
 """
 
 import os

@@ -1,6 +1,8 @@
 """
 URL Configuration para gestion_forestal project.
-TI3041_Backend_Checklist - Evaluación N°3
+"""
+Sistema de Gestión de Seguridad Forestal
+Configuración de URLs principales del proyecto
 """
 from django.contrib import admin
 from django.urls import path, include

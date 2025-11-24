@@ -1,5 +1,4 @@
-# Dependencias de Python para TI3041_Backend_Checklist
-# Proyecto de Gestión Forestal - Evaluación N°3
+# Dependencias del Sistema de Gestión de Seguridad Forestal
 
 # Framework Django
 Django==4.2.7

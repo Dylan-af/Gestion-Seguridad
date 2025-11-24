@@ -1,6 +1,6 @@
 """
-Vistas y Controladores para la aplicación seguridad_app
-TI3041_Backend_Checklist - Evaluación N°3
+Sistema de Gestión de Seguridad Forestal
+Vistas y Controladores para Checklists y Visitas
 
 Incluye:
 - Gestión de sesiones y autenticación

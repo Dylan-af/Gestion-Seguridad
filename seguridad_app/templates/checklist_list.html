@@ -26,11 +26,12 @@
     </form>
     
     {% if checklists %}
+    <div class="table-responsive">
     <table>
         <thead>
             <tr>
-                <th>Título</th>
-                <th>Área</th>
+                <th>Titulo</th>
+                <th>Area</th>
                 <th>Responsable</th>
                 <th>Estado</th>
                 <th>Prioridad</th>
@@ -80,9 +81,10 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
     {% else %}
     <p style="text-align: center; color: #6c757d; padding: 2rem;">
-        No se encontraron checklists con los criterios de búsqueda especificados.
+        No se encontraron checklists con los criterios de busqueda especificados.
     </p>
     {% endif %}
 </div>

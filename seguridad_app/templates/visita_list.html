@@ -34,10 +34,11 @@
     </form>
     
     {% if visitas %}
+    <div class="table-responsive">
     <table>
         <thead>
             <tr>
-                <th>Código</th>
+                <th>Codigo</th>
                 <th>Tipo</th>
                 <th>Fecha</th>
                 <th>Lugar</th>
@@ -86,9 +87,10 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
     {% else %}
     <p style="text-align: center; color: #6c757d; padding: 2rem;">
-        No se encontraron visitas con los criterios de búsqueda especificados.
+        No se encontraron visitas con los criterios de busqueda especificados.
     </p>
     {% endif %}
 </div>

@@ -1,6 +1,6 @@
 """
-Configuración de URLs para la aplicación seguridad_app
-TI3041_Backend_Checklist - Evaluación N°3
+Sistema de Gestión de Seguridad Forestal
+Configuración de URLs para la aplicación de seguridad
 
 Incluye rutas protegidas para las operaciones CRUD
 """
