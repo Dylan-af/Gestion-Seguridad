@@ -5,7 +5,7 @@
 Django==4.2.7
 
 # Conector MySQL para Django
-mysqlclient==2.2.0
+pymysql==1.1.0
 
 # Hashers de contraseñas adicionales
 argon2-cffi==23.1.0

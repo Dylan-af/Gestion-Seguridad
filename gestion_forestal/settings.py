@@ -59,13 +59,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'gestion_forestal.wsgi.application'
 
 # Database - MySQL Configuration
-# Configuración de conexión a MySQL
+# Configuración de conexión a MySQL (XAMPP)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gestion_forestal_db',  # Nombre de la base de datos
-        'USER': 'root',  # Usuario de MySQL
-        'PASSWORD': 'tu_password_mysql',  # Contraseña de MySQL
+        'NAME': 'gestion-forestal',  # Nombre de la base de datos
+        'USER': 'root',  # Usuario de MySQL (por defecto en XAMPP)
+        'PASSWORD': '',  # Sin contraseña por defecto en XAMPP
         'HOST': 'localhost',  # Host de la base de datos
         'PORT': '3306',  # Puerto de MySQL
         'OPTIONS': {
@@ -95,10 +95,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Password Hashers - Algoritmos de Hashing para contraseñas
 PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
 # Internationalization
